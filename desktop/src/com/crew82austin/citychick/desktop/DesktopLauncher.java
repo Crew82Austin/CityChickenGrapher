@@ -10,6 +10,8 @@ public class DesktopLauncher {
 		config.height = 1024;
 		config.width = 1024;
 		config.resizable = false;
+		config.x = 0;
+		config.y = 0;
 		new LwjglApplication(new CityChickenGame(), config);
 	}
 }

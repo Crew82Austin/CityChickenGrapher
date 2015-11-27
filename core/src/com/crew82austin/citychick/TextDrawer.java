@@ -23,5 +23,6 @@ public class TextDrawer {
 	public void draw(float x, float y, String text){
 		
 		font.draw(tBatch, text, x, y);
+	
 	}
 }

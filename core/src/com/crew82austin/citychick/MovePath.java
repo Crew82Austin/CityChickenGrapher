@@ -42,8 +42,14 @@ public class MovePath {
 			for(int a = 0; a < Math.abs(x2 - x1) + 1; a++){
 				if(a >= 1025)
 					break;
-				pathX[a] = x1 + a;
-				pathY[a] = y1 + (a * slope);
+				if((x2 - x1) < 0){
+					pathX[a] = x1 - a;
+					pathY[a] = y1 - (a * slope);
+				}
+				else if((x2 - x1) > 0){
+					pathX[a] = x1 + a;
+					pathY[a] = y1 + (a * slope);
+				}
 			}
 		}
 		

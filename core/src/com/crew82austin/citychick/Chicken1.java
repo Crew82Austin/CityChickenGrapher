@@ -11,12 +11,14 @@ public class Chicken1 implements Movable{
 	private int pathLoc;
 	private int cFrame;
 	private int cmPath;
+	private int pathStep;
 	private float fTime;
 	private float mTime;
 	private boolean rev1;
 	private boolean rev2;
 	private boolean spawned;
 	private boolean loop;
+    private int cID;
 	private MovePath[] cPath;
 	private SpriteSet sprite;
 	private SpriteBatch cBatch;
@@ -29,28 +31,36 @@ public class Chicken1 implements Movable{
 		cFrame = frame;
 		rev1 = false;
 		pathLoc = 0;
+		pathStep = 1;
 		loop = looped;
-		cPath = new MovePath[4];
+		cPath = new MovePath[8];
 		rand =  new Random(System.nanoTime());
-		for(int a = 0; a < 4; a++){
+		for(int a = 0; a < 8; a++){
 			cPath[a] = new MovePath(1024, 1024);
 		}
 		
 		cPath[0].setLine(235, 1024, 235, 0);
 		cPath[1].setLine(235, 0, 235, 1024);
-		cPath[2].setLine(740, 1024, 740, 0);
-		cPath[3].setLine(740, 0, 740, 1024);
+		cPath[2].setLine(720, 1024, 720, 0);
+		cPath[3].setLine(720, 0, 720, 1024);
+		cPath[4].setLine(0, 740, 1024, 740);
+		cPath[5].setLine(1024, 740, 0, 740);
+		cPath[6].setLine(0, 250, 1024, 250);
+		cPath[7].setLine(1024, 250, 0, 250);
 		
 		
 		
 	}
 	
 	public void determineMP(){
-		System.out.println("Chicken1 determining MP!");
-		cmPath = rand.nextInt(4);
+		System.out.println("Chicken (ID "+cID+") determining MP!");
+		cmPath = rand.nextInt(8);
 		if( (cmPath % 2) == 0){
 			rev2 = true;
-			System.out.println("Chicken1 rev2 = "+rev2);
+			System.out.println("Chicken (ID "+cID+") rev2 = "+rev2);
+		}
+		else{
+			rev2 = false;
 		}
 		
 	}
@@ -61,16 +71,21 @@ public class Chicken1 implements Movable{
 	}
 
 	@Override
-	public void spawn(int path) {
+	public void spawn(int path, int ID) {
+		cID = ID;
+		
 		if(path >= 0){
 			cmPath = path;
 			if( (cmPath % 2) == 0){
 				rev2 = true;
-				System.out.println("Chicken1 rev2 = "+rev2);
+				System.out.println("Chicken (ID "+cID+") rev2 = "+rev2);
+			}
+			else{
+				rev2 = false;
 			}
 		}
-		else if(path >= (cPath.length - 1)){
-			System.out.println("Error!. Chicken1 movepath "+path+" is undefined. Canceling spawn!");
+		else if(path >= (cPath.length)){
+			System.out.println("Error!. Chicken (ID "+cID+") movepath "+path+" is undefined. Canceling spawn!");
 			return;
 		}
 		else if(path < 0)
@@ -79,7 +94,7 @@ public class Chicken1 implements Movable{
 		chickenX = cPath[cmPath].getX(pathLoc);
 		chickenY = cPath[cmPath].getY(pathLoc);
 		spawned = true;
-		System.out.println("Chicken1 spawned on path "+cmPath+" at "+chickenX+","+chickenY+".");
+		System.out.println("Chicken (ID "+cID+")spawned on path "+cmPath+" at "+chickenX+","+chickenY+".");
 		
 		return;
 		
@@ -96,13 +111,18 @@ public class Chicken1 implements Movable{
 		}
 		
 		if(mTime > 0.02f){
-			pathLoc++;
+			if((pathLoc + pathStep) >= cPath[cmPath].getSize()){
+				pathLoc = 0;
+				if(!loop)
+					deSpawn();
+			}
+			pathLoc += pathStep;
 			chickenX = cPath[cmPath].getX(pathLoc);
 			chickenY = cPath[cmPath].getY(pathLoc);
 			if(pathLoc >= cPath[cmPath].getSize() -1 || ((cPath[cmPath].getX(pathLoc) < 0) || (cPath[cmPath].getY(pathLoc) < 0))){
 				if(loop){
 					pathLoc = 0;
-					System.out.println("Chicken1 looping!");
+					System.out.println("Chicken (ID "+cID+") looping!");
 				}
 				else{
 					deSpawn();
@@ -122,7 +142,7 @@ public class Chicken1 implements Movable{
 		chickenY = 0;
 		pathLoc = 0;
 		spawned = false;
-		System.out.println("Chicken1 Despawned!");
+		System.out.println("Chicken (ID "+cID+") Despawned!");
 		
 	}
 
@@ -130,6 +150,20 @@ public class Chicken1 implements Movable{
 	public boolean isSpawned() {
 		
 		return spawned;
+	}
+
+	@Override
+	public MovePath getMovePath() {
+		
+		return cPath[cmPath];
+	}
+	
+	public int getPathLoc(){
+		return pathLoc;
+	}
+	
+	public int getID(){
+		return cID;
 	}
 	
 	
