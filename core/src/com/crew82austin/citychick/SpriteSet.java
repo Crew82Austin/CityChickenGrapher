@@ -21,10 +21,11 @@ public class SpriteSet {
 		spritesTotal = (img.getHeight() / tileHeight) * tileWidth;
 	}
 	
-	public void draw(SpriteBatch batch, int x, int y, int frame, boolean reversed, float scale){
+	public void draw(SpriteBatch batch, int x, int y, int frame, boolean reversedX, boolean reversedY, float scale){
 		int imgX = (frame % columns) * tileWidth;
 		int imgY = (frame / columns) * tileHeight;
-		batch.draw(img, x, y, tileWidth * scale, tileHeight * scale, imgX, imgY, tileWidth , tileHeight, reversed, false);
+		batch.draw(img, x, y, tileWidth * scale, tileHeight * scale, imgX, imgY, tileWidth , tileHeight, reversedX, reversedY);
+		
 		
 	}
 	
