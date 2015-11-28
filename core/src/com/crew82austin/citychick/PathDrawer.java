@@ -5,6 +5,7 @@ import java.io.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 public class PathDrawer {
 
 	
@@ -54,14 +55,18 @@ public class PathDrawer {
 	}
 	public void draw(){
 	
-		colorPath.begin();
+		
 		for(int a = 0; a < pathLoc; a++){
 			if((float)path.getX(a) >=0 &&(float)path.getY(a) >= 0){
-				colorPath.point((float)path.getX(a), (float)path.getY(a), 0);
+				if(path.getX(a) < 0)
+					break;
+				colorPath.begin();
+				colorPath.point((float)path.getX(a), (float)path.getY(a), -1f);
 	//Label		//drawer.draw((float)path.getX(a)+5, (float)path.getY(a)+5, (float)path.getX(a)+","+(float)path.getY(a));
+				colorPath.end();
 			}
 		}
-		colorPath.end();
+	
 		
 		
 	}

@@ -19,6 +19,7 @@ public class Chicken1 implements Movable{
 	private boolean spawned;
 	private boolean loop;
     private int cID;
+    private final int MOVES;
 	private MovePath[] cPath;
 	private SpriteSet sprite;
 	private SpriteBatch cBatch;
@@ -33,9 +34,10 @@ public class Chicken1 implements Movable{
 		pathLoc = 0;
 		pathStep = 1;
 		loop = looped;
-		cPath = new MovePath[8];
+		MOVES = 8;
+		cPath = new MovePath[MOVES];
 		rand =  new Random(System.nanoTime());
-		for(int a = 0; a < 8; a++){
+		for(int a = 0; a < MOVES; a++){
 			cPath[a] = new MovePath(1024, 1024);
 		}
 		
@@ -54,7 +56,7 @@ public class Chicken1 implements Movable{
 	
 	public void determineMP(){
 		System.out.println("Chicken (ID "+cID+") determining MP!");
-		cmPath = rand.nextInt(8);
+		cmPath = rand.nextInt(MOVES);
 		if( (cmPath % 2) == 0){
 			rev2 = true;
 			System.out.println("Chicken (ID "+cID+") rev2 = "+rev2);

@@ -23,6 +23,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	private boolean paused;
 	private boolean manSpawn;
 	private boolean indv;
+	private boolean frame;
 	private float Scale;
 	private double cSpawner;
 	int cMob;
@@ -47,7 +48,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		paused = false;	//Update Movement
 		manSpawn = false; //Call a manually spawning method instead of random MOB spawning
 		indv = false;  //Draw cross-hairs and IDs for each MOB
-		
+		frame = false;	//FPS
 		///////////////////////////
 		chickens = new Chicken1[8];
 		timers = new float[4];
@@ -66,7 +67,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		if(manSpawn)
 			mSpawnMovables();
 		
-		cSpawner = (3 + Math.random() * 50);
+		cSpawner = (3 + Math.random() * 10);
 		/*skin = new Skin();
 		
 		rMen = new SelectBox(new SelectBox.SelectBoxStyle(font, Color.BLACK, Drawable.class, ));
@@ -85,23 +86,27 @@ public class CityChickenGame extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(img, 0, 0);
 		drawMovables();
+		
 		if(path)
 			pDraw.draw();
 		if(grid)
 			tDraw.draw(900f, 1014f, "Scale = "+Scale);
 		if(paused)
 			tDraw.draw(0, 1014f, "Paused");
+		if(frame)
+			tDraw.draw(950f, 990f, "FPS="+Gdx.graphics.getFramesPerSecond());
 		batch.end();
 		
 		/////////////////////////////End Draw / Begin Input
 		handleInput();
 		////////////////////////////End Input / Begin MOBs
+		if(indv)
+			drawCross();
 		if(!manSpawn && !paused)
 			spawnMovables();
 		if(!paused)
 			updateMovables();
-		if(indv)
-			drawCross();
+		
 		//End MOBs
 		
 		
@@ -159,8 +164,6 @@ public class CityChickenGame extends ApplicationAdapter {
 	
 	public void drawGrid(){
 		
-		float cX ;
-		float cY;
 		lines.setColor(0.02f, 1f, 0.98f, 1f);
 		for(int a = 0; a < (Gdx.graphics.getWidth() / Scale); a++)
 		{
@@ -205,6 +208,8 @@ public class CityChickenGame extends ApplicationAdapter {
 	}
 	
 	
+	
+	
 	public void handleInput(){
 
 		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -226,6 +231,8 @@ public class CityChickenGame extends ApplicationAdapter {
 			indv = !indv;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.P))
 			paused = !paused;
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F))
+			frame = !frame;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.F1))
 			path = !path;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.F2))

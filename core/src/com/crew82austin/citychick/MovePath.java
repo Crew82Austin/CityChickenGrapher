@@ -1,5 +1,8 @@
 package com.crew82austin.citychick;
 
+
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 public class MovePath {
 	
 	private int[] pathX;
@@ -8,6 +11,7 @@ public class MovePath {
 	public MovePath(int xSize, int ySize){
 		pathX = new int[xSize + 1];
 		pathY = new int[ySize + 1];
+		
 		clear();
 	}
 	/**
@@ -101,6 +105,8 @@ public class MovePath {
 			return;
 			
 	}
+	
+	
 	
 	public int getX(int n){
 		return pathX[n];
