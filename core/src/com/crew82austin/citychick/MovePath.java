@@ -33,7 +33,13 @@ public class MovePath {
 		return;
 	}
 	
-	
+	/**
+	 * Fill a MovePath between two points
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 */
 	public void setLine(int x1, int y1, int x2, int y2){
 		int slope = 0;
 		boolean vert = true;

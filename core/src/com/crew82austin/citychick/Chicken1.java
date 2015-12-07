@@ -31,16 +31,17 @@ public class Chicken1 implements Movable{
 		spawned = false;
 		cFrame = frame;
 		rev1 = false;
-		pathLoc = 0;
-		pathStep = 1;
+		pathLoc = 0;	//Location in the MovePath
+		pathStep = 1;	//Step through the MovePath
 		loop = looped;
-		MOVES = 8;
+		MOVES = 8;	//Possible number of move paths
 		cPath = new MovePath[MOVES];
 		rand =  new Random(System.nanoTime());
 		for(int a = 0; a < MOVES; a++){
 			cPath[a] = new MovePath(1024, 1024);
 		}
 		
+		//Begin path definitions
 		cPath[0].setLine(235, 1024, 235, 0);
 		cPath[1].setLine(235, 0, 235, 1024);
 		cPath[2].setLine(720, 1024, 720, 0);
@@ -49,11 +50,14 @@ public class Chicken1 implements Movable{
 		cPath[5].setLine(1024, 740, 0, 740);
 		cPath[6].setLine(0, 250, 1024, 250);
 		cPath[7].setLine(1024, 250, 0, 250);
-		
+		//End path definitions
 		
 		
 	}
 	
+	/**
+	 * Determine which move paths to choose
+	 */
 	public void determineMP(){
 		System.out.println("Chicken (ID "+cID+") determining MP!");
 		cmPath = rand.nextInt(MOVES);
@@ -72,6 +76,11 @@ public class Chicken1 implements Movable{
 			sprite.draw(cBatch, chickenX, chickenY, cFrame, rev1, rev2, 1f);
 	}
 
+	/**
+	 * Method that initializes the chicken on a defined MovePath and integer ID
+	 * @param path
+	 * @param ID
+	 */
 	@Override
 	public void spawn(int path, int ID) {
 		cID = ID;
@@ -102,6 +111,9 @@ public class Chicken1 implements Movable{
 		
 	}
 
+	/**
+	 * Method that updates the state of the Chicken
+	 */
 	@Override
 	public void update(float dTime) {
 		fTime += dTime;

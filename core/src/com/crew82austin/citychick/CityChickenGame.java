@@ -3,16 +3,11 @@ package com.crew82austin.citychick;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+
 
 public class CityChickenGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -31,9 +26,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	PathDrawer pDraw;
 	TextDrawer tDraw;
 	Chicken1[] chickens;
-	/*SelectBox rMen;
-	Object[] rMenItems = new Object[20]; //Stuff for a menu
-	Skin skin;*/
+	
 	
 	
 	@Override
@@ -68,11 +61,7 @@ public class CityChickenGame extends ApplicationAdapter {
 			mSpawnMovables();
 		
 		cSpawner = (3 + Math.random() * 10);
-		/*skin = new Skin();
 		
-		rMen = new SelectBox(new SelectBox.SelectBoxStyle(font, Color.BLACK, Drawable.class, ));
-		 rMenItems[0] = new Label("Hello", skin);
-		 rMen.setItems(rMenItems);*/ //Stuff For a Menu
 	}
 
 	@Override
@@ -129,6 +118,9 @@ public class CityChickenGame extends ApplicationAdapter {
 	}
 	
 	
+	/**
+	 * Method run for automatic spawning of MOBs
+	 */
 	public  void spawnMovables(){
 		timers[0] += Gdx.graphics.getRawDeltaTime();
 		if(timers[0] > cSpawner){
@@ -147,6 +139,10 @@ public class CityChickenGame extends ApplicationAdapter {
 		return;
 	}
 	
+	
+	/**
+	 * Method called for drawing MOBs
+	 */
 	public void drawMovables(){
 		for(int e = 0; e < chickens.length; e++){
 			if(chickens[e].isSpawned())
@@ -154,6 +150,9 @@ public class CityChickenGame extends ApplicationAdapter {
 		}
 	}
 	
+	/**
+	 * Method called updating the states of MOBs
+	 */
 	public void updateMovables(){
 			for(int d = 0; d < chickens.length; d++){
 				if(chickens[d].isSpawned())
@@ -162,6 +161,9 @@ public class CityChickenGame extends ApplicationAdapter {
 		return;
 	}
 	
+	/**
+	 * Method called for drawing the grid
+	 */
 	public void drawGrid(){
 		
 		lines.setColor(0.02f, 1f, 0.98f, 1f);
@@ -180,9 +182,11 @@ public class CityChickenGame extends ApplicationAdapter {
 		}
 		
 		
-		
 	}
 
+	/**
+	 * Method called for drawing the MOB crosshairs
+	 */
 	public void drawCross(){
 		int cX;
 		int cY;
@@ -209,7 +213,9 @@ public class CityChickenGame extends ApplicationAdapter {
 	
 	
 	
-	
+	/**
+	 * Method called for handling the (AKA put your input here
+	 */
 	public void handleInput(){
 
 		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -256,6 +262,10 @@ public class CityChickenGame extends ApplicationAdapter {
 		}
 	}
 	
+	/**
+	 * Method for clearing an array timer
+	 * @param timer
+	 */
 	public void clearTimer(int timer){
 		timers[timer] = 0;
 		return;
