@@ -9,61 +9,61 @@ public class Chicken1 implements Movable{
 	private int chickenX;
 	private int chickenY;
 	private int pathLoc;
-	private int cFrame;
-	private int cmPath;
+	private int currentFrame;
+	private int currentMovPath;
 	private int pathStep;
-	private float fTime;
-	private float mTime;
+	private float frameTime;
+	private float moveTime;
 	private boolean rev1;
 	private boolean rev2;
 	private boolean spawned;
 	private boolean loop;
-    private int cID;
-    private final int MOVES;
-	private MovePath[] cPath;
+    private int chickenID;
+    private final int Moves;
+	private MovePath[] chickenPath;
 	private SpriteSet sprite;
-	private SpriteBatch cBatch;
+	private SpriteBatch chickenBatch;
 	private Random rand;
 	
 	public Chicken1(SpriteBatch batch, String imgFile, int frame, int size, boolean looped){
 		sprite = new SpriteSet(imgFile, size, size);
-		cBatch = batch;
+		chickenBatch = batch;
 		spawned = false;
-		cFrame = frame;
+		currentFrame = frame;
 		rev1 = false;
 		pathLoc = 0;	//Location in the MovePath
 		pathStep = 1;	//Step through the MovePath
 		loop = looped;
-		MOVES = 8;	//Possible number of move paths
-		cPath = new MovePath[MOVES];
+		Moves = 8;	//Possible number of move paths
+		chickenPath = new MovePath[Moves];
 		rand =  new Random(System.nanoTime());
-		for(int a = 0; a < MOVES; a++){
-			cPath[a] = new MovePath(1024, 1024);
+		for(int a = 0; a < Moves; a++){
+			chickenPath[a] = new MovePath(1024, 1024);
 		}
 		
 		//Begin path definitions
-		cPath[0].setLine(235, 1024, 235, 0);
-		cPath[1].setLine(235, 0, 235, 1024);
-		cPath[2].setLine(720, 1024, 720, 0);
-		cPath[3].setLine(720, 0, 720, 1024);
-		cPath[4].setLine(0, 740, 1024, 740);
-		cPath[5].setLine(1024, 740, 0, 740);
-		cPath[6].setLine(0, 250, 1024, 250);
-		cPath[7].setLine(1024, 250, 0, 250);
+		chickenPath[0].setLine(235, 1024, 235, 0);
+		chickenPath[1].setLine(235, 0, 235, 1024);
+		chickenPath[2].setLine(720, 1024, 720, 0);
+		chickenPath[3].setLine(720, 0, 720, 1024);
+		chickenPath[4].setLine(0, 740, 1024, 740);
+		chickenPath[5].setLine(1024, 740, 0, 740);
+		chickenPath[6].setLine(0, 250, 1024, 250);
+		chickenPath[7].setLine(1024, 250, 0, 250);
 		//End path definitions
 		
 		
 	}
 	
 	/**
-	 * Determine which move paths to choose
+	 * Determine which move path to choose
 	 */
 	public void determineMP(){
-		System.out.println("Chicken (ID "+cID+") determining MP!");
-		cmPath = rand.nextInt(MOVES);
-		if( (cmPath % 2) == 0){
+		System.out.println("Chicken (ID "+chickenID+") determining MP!");
+		currentMovPath = rand.nextInt(Moves);
+		if( (currentMovPath % 2) == 0){
 			rev2 = true;
-			System.out.println("Chicken (ID "+cID+") rev2 = "+rev2);
+			System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
 		}
 		else{
 			rev2 = false;
@@ -73,7 +73,7 @@ public class Chicken1 implements Movable{
 	
 	public void draw(){
 		if(spawned)
-			sprite.draw(cBatch, chickenX, chickenY, cFrame, rev1, rev2, 1f);
+			sprite.draw(chickenBatch, chickenX, chickenY, currentFrame, rev1, rev2, 1f);
 	}
 
 	/**
@@ -83,29 +83,29 @@ public class Chicken1 implements Movable{
 	 */
 	@Override
 	public void spawn(int path, int ID) {
-		cID = ID;
+		chickenID = ID;
 		
 		if(path >= 0){
-			cmPath = path;
-			if( (cmPath % 2) == 0){
+			currentMovPath = path;
+			if( (currentMovPath % 2) == 0){
 				rev2 = true;
-				System.out.println("Chicken (ID "+cID+") rev2 = "+rev2);
+				System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
 			}
 			else{
 				rev2 = false;
 			}
 		}
-		else if(path >= (cPath.length)){
-			System.out.println("Error!. Chicken (ID "+cID+") movepath "+path+" is undefined. Canceling spawn!");
+		else if(path >= (chickenPath.length)){
+			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
 			return;
 		}
 		else if(path < 0)
 			determineMP();
 		
-		chickenX = cPath[cmPath].getX(pathLoc);
-		chickenY = cPath[cmPath].getY(pathLoc);
+		chickenX = chickenPath[currentMovPath].getX(pathLoc);
+		chickenY = chickenPath[currentMovPath].getY(pathLoc);
 		spawned = true;
-		System.out.println("Chicken (ID "+cID+")spawned on path "+cmPath+" at "+chickenX+","+chickenY+".");
+		System.out.println("Chicken (ID "+chickenID+")spawned on path "+currentMovPath+" at "+chickenX+","+chickenY+".");
 		
 		return;
 		
@@ -116,38 +116,38 @@ public class Chicken1 implements Movable{
 	 */
 	@Override
 	public void update(float dTime) {
-		fTime += dTime;
-		mTime += dTime;
+		frameTime += dTime;
+		moveTime += dTime;
 		
-		if(fTime > 0.4f){
-			cFrame++;
-			fTime = 0;
+		if(frameTime > 0.4f){
+			currentFrame++;
+			frameTime = 0;
 		}
 		
-		if(mTime > 0.02f){
-			if((pathLoc + pathStep) >= cPath[cmPath].getSize()){
+		if(moveTime > 0.02f){
+			if((pathLoc + pathStep) >= chickenPath[currentMovPath].getSize()){
 				pathLoc = 0;
 				if(!loop)
 					deSpawn();
 			}
 			pathLoc += pathStep;
-			chickenX = cPath[cmPath].getX(pathLoc);
-			chickenY = cPath[cmPath].getY(pathLoc);
-			if(pathLoc >= cPath[cmPath].getSize() -1 || ((cPath[cmPath].getX(pathLoc) < 0) || (cPath[cmPath].getY(pathLoc) < 0))){
+			chickenX = chickenPath[currentMovPath].getX(pathLoc);
+			chickenY = chickenPath[currentMovPath].getY(pathLoc);
+			if(pathLoc >= chickenPath[currentMovPath].getSize() -1 || ((chickenPath[currentMovPath].getX(pathLoc) < 0) || (chickenPath[currentMovPath].getY(pathLoc) < 0))){
 				if(loop){
 					pathLoc = 0;
-					System.out.println("Chicken (ID "+cID+") looping!");
+					System.out.println("Chicken (ID "+chickenID+") looping!");
 				}
 				else{
 					deSpawn();
 				}
 			}
 			
-			mTime = 0;
+			moveTime = 0;
 		}
 		
-		if(cFrame >= sprite.maxSprites())
-			cFrame = 0;
+		if(currentFrame >= sprite.maxSprites())
+			currentFrame = 0;
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class Chicken1 implements Movable{
 		chickenY = 0;
 		pathLoc = 0;
 		spawned = false;
-		System.out.println("Chicken (ID "+cID+") Despawned!");
+		System.out.println("Chicken (ID "+chickenID+") Despawned!");
 		
 	}
 
@@ -169,7 +169,7 @@ public class Chicken1 implements Movable{
 	@Override
 	public MovePath getMovePath() {
 		
-		return cPath[cmPath];
+		return chickenPath[currentMovPath];
 	}
 	
 	public int getPathLoc(){
@@ -177,7 +177,7 @@ public class Chicken1 implements Movable{
 	}
 	
 	public int getID(){
-		return cID;
+		return chickenID;
 	}
 	
 	

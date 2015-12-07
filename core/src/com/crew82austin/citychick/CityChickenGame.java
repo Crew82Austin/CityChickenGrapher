@@ -16,11 +16,11 @@ public class CityChickenGame extends ApplicationAdapter {
 	private boolean grid;
 	private boolean path;
 	private boolean paused;
-	private boolean manSpawn;
+	private boolean manualSpawn;
 	private boolean indv;
 	private boolean frame;
 	private float Scale;
-	private double cSpawner;
+	private double chickSpawnTime;
 	int cMob;
 	float[] timers;
 	PathDrawer pDraw;
@@ -36,10 +36,10 @@ public class CityChickenGame extends ApplicationAdapter {
 		cMob = 0;
 		
 		///////////////////////////Booleans
-		grid = false;	//Draw Grid
-		path = false;	//Draw Path
-		paused = false;	//Update Movement
-		manSpawn = false; //Call a manually spawning method instead of random MOB spawning
+		grid = false;	//Draw Grid. Toggled with 'q'
+		path = false;	//Draw Path. Uses Math
+		paused = false;	//Update Movement. Toggled with 'p'
+		manualSpawn = false; //Call a manually spawning method instead of random MOB spawning
 		indv = false;  //Draw cross-hairs and IDs for each MOB
 		frame = false;	//FPS
 		///////////////////////////
@@ -57,10 +57,10 @@ public class CityChickenGame extends ApplicationAdapter {
 		
 		pDraw = new PathDrawer(batch);  
 		tDraw = new TextDrawer(batch);
-		if(manSpawn)
+		if(manualSpawn)
 			mSpawnMovables();
 		
-		cSpawner = (3 + Math.random() * 10);
+		chickSpawnTime = (3 + Math.random() * 10);
 		
 	}
 
@@ -71,8 +71,8 @@ public class CityChickenGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		///////////////////////////////Begin Draw
 		batch.begin();
+		///////////////////////////////Begin Draw
 		batch.draw(img, 0, 0);
 		drawMovables();
 		
@@ -84,14 +84,15 @@ public class CityChickenGame extends ApplicationAdapter {
 			tDraw.draw(0, 1014f, "Paused");
 		if(frame)
 			tDraw.draw(950f, 990f, "FPS="+Gdx.graphics.getFramesPerSecond());
-		batch.end();
 		
 		/////////////////////////////End Draw / Begin Input
+		batch.end();
+		
 		handleInput();
 		////////////////////////////End Input / Begin MOBs
 		if(indv)
 			drawCross();
-		if(!manSpawn && !paused)
+		if(!manualSpawn && !paused)
 			spawnMovables();
 		if(!paused)
 			updateMovables();
@@ -103,8 +104,8 @@ public class CityChickenGame extends ApplicationAdapter {
 	}
 	
 	 
-	public void mSpawnMovables(){	//Called when manSpawn = true instead of spawnMovables()
-			//List manual MOB spawning commands here
+	public void mSpawnMovables(){	//Called when manualSpawn = true instead of spawnMovables()
+			//List manual MOB spawning methods here
 			chickens[0].spawn(0, 0); 
 			chickens[1].spawn(1, 5);
 			chickens[2].spawn(2, 3);
@@ -123,13 +124,13 @@ public class CityChickenGame extends ApplicationAdapter {
 	 */
 	public  void spawnMovables(){
 		timers[0] += Gdx.graphics.getRawDeltaTime();
-		if(timers[0] > cSpawner){
+		if(timers[0] > chickSpawnTime){
 			for(int e = 0; e < chickens.length; e++){
 				if(!chickens[e].isSpawned()){
 					chickens[e].spawn(-1, cMob);
 					cMob++;
 					clearTimer(0);
-					cSpawner = (7 + Math.random() * 30);
+					chickSpawnTime = (7 + Math.random() * 30);
 					break;
 				}
 				clearTimer(0);
@@ -185,7 +186,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	}
 
 	/**
-	 * Method called for drawing the MOB crosshairs
+	 * Method called for drawing the MOB cross-hairs
 	 */
 	public void drawCross(){
 		int cX;
