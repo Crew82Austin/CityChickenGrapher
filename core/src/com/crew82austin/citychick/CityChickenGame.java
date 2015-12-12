@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import com.crew82austin.intersection.*;
+
 
 public class CityChickenGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -26,13 +28,14 @@ public class CityChickenGame extends ApplicationAdapter {
 	PathDrawer pDraw;
 	TextDrawer tDraw;
 	Chicken1[] chickens;
+	Intersection inter;
 	
 	
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("Chicken Xing Wire 1.1.png");
+		inter = new Intersection(0, 0, 4, 5, "Manchacha and Slaughter", batch, "Chicken Xing Wire 1.1.png");
 		cMob = 0;
 		
 		///////////////////////////Booleans
@@ -73,7 +76,8 @@ public class CityChickenGame extends ApplicationAdapter {
 		
 		batch.begin();
 		///////////////////////////////Begin Draw
-		batch.draw(img, 0, 0);
+		inter.draw(); //Draw level
+		
 		drawMovables();
 		
 		if(path)
