@@ -55,21 +55,6 @@ public class Chicken1 implements Movable{
 		
 	}
 	
-	/**
-	 * Determine which move path to choose
-	 */
-	public void determineMP(){
-		System.out.println("Chicken (ID "+chickenID+") determining MP!");
-		currentMovPath = rand.nextInt(Moves);
-		if( (currentMovPath % 2) == 0){
-			rev2 = true;
-			System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
-		}
-		else{
-			rev2 = false;
-		}
-		
-	}
 	
 	public void draw(){
 		if(spawned)
@@ -85,7 +70,11 @@ public class Chicken1 implements Movable{
 	public void spawn(int path, int ID) {
 		chickenID = ID;
 		
-		if(path >= 0){
+		if(path < 0){
+			System.out.println("Chicken (ID "+chickenID+") determining MP!");
+			currentMovPath = rand.nextInt(Moves);
+		}
+		else if(path >= 0){
 			currentMovPath = path;
 			if( (currentMovPath % 2) == 0){
 				rev2 = true;
@@ -99,8 +88,6 @@ public class Chicken1 implements Movable{
 			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
 			return;
 		}
-		else if(path < 0)
-			determineMP();
 		
 		chickenX = chickenPath[currentMovPath].getX(pathLoc);
 		chickenY = chickenPath[currentMovPath].getY(pathLoc);
