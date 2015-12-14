@@ -67,19 +67,16 @@ public class Chicken1 implements Movable{
 	 * @param ID
 	 */
 	@Override
-	public void spawn(int path, int ID) {
-		chickenID = ID;
+	public void spawn(int pathID, int chickenID) {
 		
-		if(path < 0){
-			System.out.println("Chicken (ID "+chickenID+") determining MP!");
+		if(pathID < 0){
+			System.out.println("Chicken (ID "+chickenID+") determining path!");
 			currentMovPath = rand.nextInt(Moves);
 		}
-		else if(path >= (chickenPath.length)){
-			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
-			return;
-		}
-		else{
-			currentMovPath = path;
+
+		else if(pathID >= 0){
+			currentMovPath = pathID;
+
 			if( (currentMovPath % 2) == 0){
 				rev2 = true;
 				System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
@@ -88,11 +85,16 @@ public class Chicken1 implements Movable{
 				rev2 = false;
 			}
 		}
+		else if(pathID >= (chickenPath.length)){
+			System.out.println("Error!. Chicken (ID "+chickenID+") path "+pathID+" is undefined. Canceling spawn!");
+			return;
+		}
+
 		
 		chickenX = chickenPath[currentMovPath].getX(pathLoc);
 		chickenY = chickenPath[currentMovPath].getY(pathLoc);
 		spawned = true;
-		System.out.println("Chicken (ID "+chickenID+")spawned on path "+currentMovPath+" at "+chickenX+","+chickenY+".");
+		System.out.println("Chicken (ID "+chickenID+") spawned on path "+currentMovPath+" at "+chickenX+","+chickenY+".");
 		
 		return;
 		
