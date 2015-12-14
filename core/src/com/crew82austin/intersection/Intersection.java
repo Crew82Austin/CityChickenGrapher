@@ -2,6 +2,8 @@ package com.crew82austin.intersection;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 
 /**
  * Intersection for the game. Can be thought of as the current level.
@@ -20,7 +22,8 @@ public class Intersection {
 	private int nWays;	//Number of ways for the intersection (3 way, 4way, etc.)
 	private int nLanes;	//Number of lanes per way
 	private String intersectionName;
-
+	private ShapeRenderer intersectionRenderer;
+	
 	/**
 	 * Creates a standard intersection
 	 * @param x
@@ -40,6 +43,9 @@ public class Intersection {
 		intersectionName = name;
 		intersectionBatch = batch;
 		intersectionImg = new Texture(img);
+		intersectionRenderer = new ShapeRenderer(100);
+		intersectionRenderer.setAutoShapeType(true);
+		
 	}
 	
 	/**
