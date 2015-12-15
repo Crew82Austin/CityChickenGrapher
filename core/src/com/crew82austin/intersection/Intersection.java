@@ -23,6 +23,7 @@ public class Intersection {
 	private int nLanes;	//Number of lanes per way
 	private String intersectionName;
 	private ShapeRenderer intersectionRenderer;
+	private StopLine stop;
 	
 	/**
 	 * Creates a standard intersection
@@ -45,6 +46,8 @@ public class Intersection {
 		intersectionImg = new Texture(img);
 		intersectionRenderer = new ShapeRenderer(100);
 		intersectionRenderer.setAutoShapeType(true);
+		stop = new StopLine(220f, 280f, 221f, 460f, intersectionBatch);
+		
 		
 	}
 	
@@ -58,6 +61,8 @@ public class Intersection {
 	
 	public void draw(){
 		intersectionBatch.draw(intersectionImg, intersectionX, intersectionY);
+		stop.draw();
+		
 		return;
 	}
 }
