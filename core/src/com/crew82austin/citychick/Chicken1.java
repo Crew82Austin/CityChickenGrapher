@@ -24,6 +24,7 @@ public class Chicken1 implements Movable{
 	private SpriteSet sprite;
 	private SpriteBatch chickenBatch;
 	private Random rand;
+	private double chickenStartTime;
 	
 	public Chicken1(SpriteBatch batch, String imgFile, int frame, int size, boolean looped){
 		sprite = new SpriteSet(imgFile, size, size);
@@ -67,15 +68,16 @@ public class Chicken1 implements Movable{
 	 * @param ID
 	 */
 	@Override
-	public void spawn(int path, int ID) {
-		chickenID = ID;
-		
-		if(path < 0){
-			System.out.println("Chicken (ID "+chickenID+") determining MP!");
+	public void spawn(int pathID, int chickenID) {
+		chickenStartTime = System.currentTimeMillis();
+		if(pathID < 0){
+			System.out.println("Chicken (ID "+chickenID+") determining path!");
 			currentMovPath = rand.nextInt(Moves);
 		}
-		else if(path >= 0){
-			currentMovPath = path;
+
+		else if(pathID >= 0){
+			currentMovPath = pathID;
+
 			if( (currentMovPath % 2) == 0){
 				rev2 = true;
 				System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
@@ -84,15 +86,16 @@ public class Chicken1 implements Movable{
 				rev2 = false;
 			}
 		}
-		else if(path >= (chickenPath.length)){
-			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
+		else if(pathID >= (chickenPath.length)){
+			System.out.println("Error!. Chicken (ID "+chickenID+") path "+pathID+" is undefined. Canceling spawn!");
 			return;
 		}
+
 		
 		chickenX = chickenPath[currentMovPath].getX(pathLoc);
 		chickenY = chickenPath[currentMovPath].getY(pathLoc);
 		spawned = true;
-		System.out.println("Chicken (ID "+chickenID+")spawned on path "+currentMovPath+" at "+chickenX+","+chickenY+".");
+		System.out.println("Chicken (ID "+chickenID+") spawned on path "+currentMovPath+" at "+chickenX+","+chickenY+".");
 		
 		return;
 		
@@ -143,9 +146,11 @@ public class Chicken1 implements Movable{
 		chickenY = 0;
 		pathLoc = 0;
 		spawned = false;
+		chickenStartTime = 0;
 		System.out.println("Chicken (ID "+chickenID+") Despawned!");
 		
 	}
+
 
 	@Override
 	public boolean isSpawned() {
@@ -165,6 +170,16 @@ public class Chicken1 implements Movable{
 	
 	public int getID(){
 		return chickenID;
+	}
+	
+	// Returns the time the chicken has existed in milliseconds
+	public double getTime(){
+		if (spawned){
+		return System.currentTimeMillis() - chickenStartTime;
+		}else{
+			return 0;
+		}
+		
 	}
 	
 	
