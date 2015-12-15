@@ -24,6 +24,7 @@ public class Chicken1 implements Movable{
 	private SpriteSet sprite;
 	private SpriteBatch chickenBatch;
 	private Random rand;
+	private double chickenStartTime;
 	
 	public Chicken1(SpriteBatch batch, String imgFile, int frame, int size, boolean looped){
 		sprite = new SpriteSet(imgFile, size, size);
@@ -68,7 +69,7 @@ public class Chicken1 implements Movable{
 	 */
 	@Override
 	public void spawn(int pathID, int chickenID) {
-		
+		chickenStartTime = System.currentTimeMillis();
 		if(pathID < 0){
 			System.out.println("Chicken (ID "+chickenID+") determining path!");
 			currentMovPath = rand.nextInt(Moves);
@@ -148,9 +149,11 @@ public class Chicken1 implements Movable{
 		chickenY = 0;
 		pathLoc = 0;
 		spawned = false;
+		chickenStartTime = 0;
 		System.out.println("Chicken (ID "+chickenID+") Despawned!");
 		
 	}
+
 
 	@Override
 	public boolean isSpawned() {
@@ -170,6 +173,16 @@ public class Chicken1 implements Movable{
 	
 	public int getID(){
 		return chickenID;
+	}
+	
+	// Returns the time the chicken has existed in milliseconds
+	public double getTime(){
+		if (spawned){
+		return System.currentTimeMillis() - chickenStartTime;
+		}else{
+			return 0;
+		}
+		
 	}
 	
 	

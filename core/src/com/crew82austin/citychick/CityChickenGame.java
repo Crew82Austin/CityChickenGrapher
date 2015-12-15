@@ -21,7 +21,11 @@ public class CityChickenGame extends ApplicationAdapter {
 	private boolean frame;
 	private float Scale;
 	private double chickSpawnTime;
+	private int maxSpawnTime;
+	private int minSpawnTime;
+
 	private int mobID;
+	private int maxNumChickens;
 	float[] timers;
 	PathDrawer pDraw;
 	TextDrawer tDraw;
@@ -33,7 +37,12 @@ public class CityChickenGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("Chicken Xing Wire 1.1.png");
+
 		mobID = 0;
+		minSpawnTime = 5;
+		maxSpawnTime = 25;
+		maxNumChickens = 8;
+
 		
 		///////////////////////////Booleans
 		grid = false;	//Draw Grid. Toggled with 'q'
@@ -43,7 +52,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		indv = false;  //Draw cross-hairs and IDs for each MOB
 		frame = false;	//FPS
 		///////////////////////////
-		chickens = new Chicken1[8];
+		chickens = new Chicken1[maxNumChickens];
 		timers = new float[4];
 		
 		
@@ -60,7 +69,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		if(manualSpawn)
 			mSpawnMovables();
 		
-		chickSpawnTime = (3 + Math.random() * 10);
+		chickSpawnTime = (int)(Math.random() * ((maxSpawnTime - minSpawnTime) + 1) + minSpawnTime); // Spawn time algorithm
 		
 	}
 
@@ -98,9 +107,7 @@ public class CityChickenGame extends ApplicationAdapter {
 			updateMovables();
 		
 		//End MOBs
-		
-		
-		
+				
 	}
 	
 	 
@@ -130,7 +137,7 @@ public class CityChickenGame extends ApplicationAdapter {
 					chickens[e].spawn(-1, mobID);
 					mobID++;
 					clearTimer(0);
-					chickSpawnTime = (7 + Math.random() * 30);
+					chickSpawnTime = (int)(Math.random() * ((maxSpawnTime - minSpawnTime) + 1) + minSpawnTime); // Spawn time algorithm
 					break;
 				}
 				clearTimer(0);
