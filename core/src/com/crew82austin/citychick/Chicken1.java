@@ -74,7 +74,11 @@ public class Chicken1 implements Movable{
 			System.out.println("Chicken (ID "+chickenID+") determining MP!");
 			currentMovPath = rand.nextInt(Moves);
 		}
-		else if(path >= 0){
+		else if(path >= (chickenPath.length)){
+			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
+			return;
+		}
+		else{
 			currentMovPath = path;
 			if( (currentMovPath % 2) == 0){
 				rev2 = true;
@@ -83,10 +87,6 @@ public class Chicken1 implements Movable{
 			else{
 				rev2 = false;
 			}
-		}
-		else if(path >= (chickenPath.length)){
-			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
-			return;
 		}
 		
 		chickenX = chickenPath[currentMovPath].getX(pathLoc);
