@@ -23,7 +23,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	private boolean frame;
 	private float Scale;
 	private double chickSpawnTime;
-	int cMob;
+	private int mobID;
 	float[] timers;
 	PathDrawer pDraw;
 	TextDrawer tDraw;
@@ -35,8 +35,9 @@ public class CityChickenGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		inter = new Intersection(0, 0, 4, 5, "Manchacha and Slaughter", batch, "Chicken Xing Wire 1.1.png");
-		cMob = 0;
+		inter = new Intersection(0, 0, 4, 5, "Manchacha and Slaughter", batch, "Chicken Xing Wire 1.1.png");;
+		mobID = 0;
+
 		
 		///////////////////////////Booleans
 		grid = false;	//Draw Grid. Toggled with 'q'
@@ -131,8 +132,8 @@ public class CityChickenGame extends ApplicationAdapter {
 		if(timers[0] > chickSpawnTime){
 			for(int e = 0; e < chickens.length; e++){
 				if(!chickens[e].isSpawned()){
-					chickens[e].spawn(-1, cMob);
-					cMob++;
+					chickens[e].spawn(-1, mobID);
+					mobID++;
 					clearTimer(0);
 					chickSpawnTime = (7 + Math.random() * 30);
 					break;
