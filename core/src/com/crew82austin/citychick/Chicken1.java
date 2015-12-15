@@ -78,8 +78,9 @@ public class Chicken1 implements Movable{
 			System.out.println("Error!. Chicken (ID "+chickenID+") movepath "+path+" is undefined. Canceling spawn!");
 			return;
 		}
-		else{
+		if(path >= 0)
 			currentMovPath = path;
+		
 			if( (currentMovPath % 2) == 0){
 				rev2 = true;
 				System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
@@ -87,7 +88,8 @@ public class Chicken1 implements Movable{
 			else{
 				rev2 = false;
 			}
-		}
+		    
+                   
 		
 		chickenX = chickenPath[currentMovPath].getX(pathLoc);
 		chickenY = chickenPath[currentMovPath].getY(pathLoc);
