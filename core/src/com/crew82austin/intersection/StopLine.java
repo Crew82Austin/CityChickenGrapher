@@ -8,38 +8,61 @@ package com.crew82austin.intersection;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class StopLine{
 	
-	private float x1;
-	private float y1;
-	private float x2;
-	private float y2;
+	private int x1;
+	private int y1;
+	private int x2;
+	private int y2;
+	private int width;
+	private int height;
+	private float originX;
+	private float originY;
 	private boolean horiz;
-	Texture img;
+	Texture stopImg;
 	SpriteBatch stopBatch;
+	Sprite sprite;
 	
-	public StopLine (float X1, float Y1, float X2, float Y2, SpriteBatch batch){
+	public StopLine (int X1, int Y1, int X2, int Y2, SpriteBatch batch, String img){
 		x1 = X1;
 		y1 = Y1;
 		x2 = X2;
 		y2 = Y2;
-		img = new Texture("stopline.png");
+		stopImg = new Texture(img);
 		stopBatch = batch;
-		horiz = true;
-		if(x1 != x2)
-			horiz = false;
+		horiz = false;
+		
+		if(x1 != x2){
+			horiz = true;
+			width = Math.abs(x2 - x1);
+			height = 7;
+			originX = 0f;
+			originY = (float)height / 2;
+		}
+		if(!horiz){
 			
+			width = 7;
+			height = Math.abs(y2 - y1);
+			originX = (float)width / 2;
+			originY = 0f;
+		}
+		//////////////////////Set up Sprite
+		sprite = new Sprite(stopImg, 0, 0, width, height);
+		sprite.setPosition(x1, y1);
+		sprite.setOrigin(originX, originY);
+		if(horiz)
+			sprite.rotate(0.0f);
+		/////////////////////Finish Sprite setup
+		System.out.println("Constructed StopLine at "+x1+","+y1+"width = "+width+"height = "+height+
+					"horiz = "+horiz+" using image "+img);
 	}
 	
 	public void draw(){
-		float rotation = 0f;
-		if(horiz)
-			rotation = 90f;
-		
-		stopBatch.draw(img, x1, y1, 0f, 0f, (float)Math.abs(x2 - x1), (float)Math.abs(y2 - y1), 1f, 1f, rotation, 0, 0, 20, 160, false, false);
-		
+		sprite.draw(stopBatch);
+		//stopBatch.draw(stopImg, x1, y1, originX, originY, width, height, 1f, 1f, rotation, 0, 0, 20, 160, false, false);
+		//stopBatch.draw(texture, x, y, originX, originY, width, height, scaleX, scaleY, rotation, srcX, srcY, srcWidth, srcHeight, flipX, flipY);
 		return;
 	}
 }

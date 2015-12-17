@@ -54,7 +54,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		grid = false;	//Draw Grid. Toggled with 'q'
 		path = false;	//Draw Path. Uses Math
 		paused = false;	//Update Movement. Toggled with 'p'
-		manualSpawn = false; //Call a manually spawning method instead of random MOB spawning
+		manualSpawn = true; //Call a manually spawning method instead of random MOB spawning
 		indv = false;  //Draw cross-hairs and IDs for each MOB
 		frame = false;	//FPS
 		mousePoint = false;  //Print the mouse coordinates next to the mouse with tDraw
@@ -125,14 +125,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	 
 	public void mSpawnMovables(){	//Called when manualSpawn = true instead of spawnMovables()
 			//List manual MOB spawning methods here
-			chickens[0].spawn(0, 0); 
-			chickens[1].spawn(1, 5);
-			chickens[2].spawn(2, 3);
-			chickens[3].spawn(3, 4);
-			chickens[4].spawn(4, 6);
-			chickens[5].spawn(5, 2);
-			chickens[6].spawn(6, 20);
-			chickens[7].spawn(7, 503);
+			
 		
 		return;
 	}

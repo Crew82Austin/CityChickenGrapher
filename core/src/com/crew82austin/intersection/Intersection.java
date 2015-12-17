@@ -48,10 +48,10 @@ public class Intersection {
 		intersectionRenderer = new ShapeRenderer(100);
 		intersectionRenderer.setAutoShapeType(true);
 		stop = new StopLine[nWays];
-		stop[0] = new StopLine(220f, 280f, 221f, 460f, intersectionBatch);
-		stop[1] = new StopLine(300f, 780f, 190f, 780f, intersectionBatch);
-		stop[2] = new StopLine(744f, 724f, 744f, 564f, intersectionBatch);
-		stop[3] = new StopLine(724f, 240f, 564f, 240f, intersectionBatch);
+		stop[0] = new StopLine(223, 300, 223, 460, intersectionBatch, "stopline.png");
+		stop[1] = new StopLine(300, 800, 488, 800, intersectionBatch, "stopline.png");
+		stop[2] = new StopLine(775, 490, 775, 723, intersectionBatch, "stopline.png");
+		stop[3] = new StopLine(520, 233, 720, 233, intersectionBatch, "stopline.png");
 		
 		
 		
@@ -66,7 +66,7 @@ public class Intersection {
 	}
 	
 	public void draw(){
-		intersectionBatch.draw(intersectionImg, intersectionX, intersectionY);
+	intersectionBatch.draw(intersectionImg, intersectionX, intersectionY);
 		for(int a = 0; a < nWays; a++)
 			stop[a].draw();
 		
