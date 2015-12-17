@@ -21,9 +21,14 @@ public class CityChickenGame extends ApplicationAdapter {
 	private boolean manualSpawn;
 	private boolean indv;
 	private boolean frame;
+	private boolean mousePoint;
 	private float Scale;
 	private double chickSpawnTime;
+	private int maxSpawnTime;
+	private int minSpawnTime;
+
 	private int mobID;
+	private int maxNumChickens;
 	float[] timers;
 	PathDrawer pDraw;
 	TextDrawer tDraw;
@@ -35,8 +40,14 @@ public class CityChickenGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
 		inter = new Intersection(0, 0, 4, 5, "Manchacha and Slaughter", batch, "Chicken Xing Wire 1.1.png");;
+
 		mobID = 0;
+		minSpawnTime = 5;
+		maxSpawnTime = 25;
+		maxNumChickens = 8;
+
 
 		
 		///////////////////////////Booleans
@@ -46,8 +57,9 @@ public class CityChickenGame extends ApplicationAdapter {
 		manualSpawn = false; //Call a manually spawning method instead of random MOB spawning
 		indv = false;  //Draw cross-hairs and IDs for each MOB
 		frame = false;	//FPS
+		mousePoint = false;  //Print the mouse coordinates next to the mouse with tDraw
 		///////////////////////////
-		chickens = new Chicken1[8];
+		chickens = new Chicken1[maxNumChickens];
 		timers = new float[4];
 		
 		
@@ -64,7 +76,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		if(manualSpawn)
 			mSpawnMovables();
 		
-		chickSpawnTime = (3 + Math.random() * 10);
+		chickSpawnTime = (int)(Math.random() * ((maxSpawnTime - minSpawnTime) + 1) + minSpawnTime); // Spawn time algorithm
 		
 	}
 
@@ -89,6 +101,10 @@ public class CityChickenGame extends ApplicationAdapter {
 			tDraw.draw(0, 1014f, "Paused");
 		if(frame)
 			tDraw.draw(950f, 990f, "FPS="+Gdx.graphics.getFramesPerSecond());
+		if(mousePoint){
+			tDraw.draw((float)Gdx.input.getX() + 5f, Gdx.graphics.getHeight() - (float)Gdx.input.getY() + 5f, Gdx.input.getX()+","+
+					(Gdx.graphics.getHeight() - Gdx.input.getY()));
+		}
 		
 		/////////////////////////////End Draw / Begin Input
 		batch.end();
@@ -103,9 +119,7 @@ public class CityChickenGame extends ApplicationAdapter {
 			updateMovables();
 		
 		//End MOBs
-		
-		
-		
+				
 	}
 	
 	 
@@ -135,7 +149,7 @@ public class CityChickenGame extends ApplicationAdapter {
 					chickens[e].spawn(-1, mobID);
 					mobID++;
 					clearTimer(0);
-					chickSpawnTime = (7 + Math.random() * 30);
+					chickSpawnTime = (int)(Math.random() * ((maxSpawnTime - minSpawnTime) + 1) + minSpawnTime); // Spawn time algorithm
 					break;
 				}
 				clearTimer(0);
@@ -235,6 +249,8 @@ public class CityChickenGame extends ApplicationAdapter {
 	/*	if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
 			rMen.draw(batch, 1f);	//Stuff for a menu
 		}*/
+		if(Gdx.input.isKeyJustPressed(Input.Keys.M))
+			mousePoint = !mousePoint;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Q))
 			grid = !grid;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.C))
