@@ -23,7 +23,7 @@ public class Intersection {
 	private int nLanes;	//Number of lanes per way
 	private String intersectionName;
 	private ShapeRenderer intersectionRenderer;
-	private StopLine stop;
+	private StopLine[] stop;
 	
 	/**
 	 * Creates a standard intersection
@@ -36,6 +36,7 @@ public class Intersection {
 	 * @param img
 	 */
 	public Intersection (int x, int y, int ways, int lanes, String name, SpriteBatch batch, String img){
+		
 		intersectionX = x;
 		intersectionY = y;
 		nWays = ways;
@@ -46,7 +47,12 @@ public class Intersection {
 		intersectionImg = new Texture(img);
 		intersectionRenderer = new ShapeRenderer(100);
 		intersectionRenderer.setAutoShapeType(true);
-		stop = new StopLine(220f, 280f, 221f, 460f, intersectionBatch);
+		stop = new StopLine[nWays];
+		stop[0] = new StopLine(220f, 280f, 221f, 460f, intersectionBatch);
+		stop[1] = new StopLine(300f, 780f, 190f, 780f, intersectionBatch);
+		stop[2] = new StopLine(744f, 724f, 744f, 564f, intersectionBatch);
+		stop[3] = new StopLine(724f, 240f, 564f, 240f, intersectionBatch);
+		
 		
 		
 	}
@@ -61,7 +67,8 @@ public class Intersection {
 	
 	public void draw(){
 		intersectionBatch.draw(intersectionImg, intersectionX, intersectionY);
-		stop.draw();
+		for(int a = 0; a < nWays; a++)
+			stop[a].draw();
 		
 		return;
 	}
