@@ -19,6 +19,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	private boolean manualSpawn;
 	private boolean indv;
 	private boolean frame;
+	private boolean mousePoint;
 	private float Scale;
 	private double chickSpawnTime;
 	private int maxSpawnTime;
@@ -51,6 +52,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		manualSpawn = false; //Call a manually spawning method instead of random MOB spawning
 		indv = false;  //Draw cross-hairs and IDs for each MOB
 		frame = false;	//FPS
+		mousePoint = false;  //Print the mouse coordinates next to the mouse with tDraw
 		///////////////////////////
 		chickens = new Chicken1[maxNumChickens];
 		timers = new float[4];
@@ -93,6 +95,10 @@ public class CityChickenGame extends ApplicationAdapter {
 			tDraw.draw(0, 1014f, "Paused");
 		if(frame)
 			tDraw.draw(950f, 990f, "FPS="+Gdx.graphics.getFramesPerSecond());
+		if(mousePoint){
+			tDraw.draw((float)Gdx.input.getX() + 5f, Gdx.graphics.getHeight() - (float)Gdx.input.getY() + 5f, Gdx.input.getX()+","+
+					(Gdx.graphics.getHeight() - Gdx.input.getY()));
+		}
 		
 		/////////////////////////////End Draw / Begin Input
 		batch.end();
@@ -237,6 +243,8 @@ public class CityChickenGame extends ApplicationAdapter {
 	/*	if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
 			rMen.draw(batch, 1f);	//Stuff for a menu
 		}*/
+		if(Gdx.input.isKeyJustPressed(Input.Keys.M))
+			mousePoint = !mousePoint;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Q))
 			grid = !grid;
 		if(Gdx.input.isKeyJustPressed(Input.Keys.C))
