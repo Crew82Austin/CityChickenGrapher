@@ -14,8 +14,7 @@ public class Chicken1 implements Movable{
 	private int pathStep;
 	private float frameTime;
 	private float moveTime;
-	private boolean rev1;
-	private boolean rev2;
+	private float rot;
 	private boolean spawned;
 	private boolean loop;
     private int chickenID;
@@ -31,7 +30,6 @@ public class Chicken1 implements Movable{
 		chickenBatch = batch;
 		spawned = false;
 		currentFrame = frame;
-		rev1 = false;
 		pathLoc = 0;	//Location in the MovePath
 		pathStep = 1;	//Step through the MovePath
 		loop = looped;
@@ -59,7 +57,7 @@ public class Chicken1 implements Movable{
 	
 	public void draw(){
 		if(spawned)
-			sprite.draw(chickenBatch, chickenX, chickenY, currentFrame, rev1, rev2, 1f);
+			sprite.draw(chickenBatch, chickenX, chickenY, currentFrame, rot, 1f);
 	}
 
 	/**
@@ -85,15 +83,10 @@ public class Chicken1 implements Movable{
 
 		else if(pathID >= 0)
 			currentMovPath = pathID;
-
-			if( (currentMovPath % 2) == 0){
-				rev2 = true;
-				System.out.println("Chicken (ID "+chickenID+") rev2 = "+rev2);
-			}
-			else{
-				rev2 = false;
-			}
-
+		rot = (currentMovPath < 4) ? 0.0f : 90.0f;
+		if( (currentMovPath % 2) == 0){
+		  rot += 180.0;
+		}
 
 		chickenX = chickenPath[currentMovPath].getX(pathLoc);
 		chickenY = chickenPath[currentMovPath].getY(pathLoc);
