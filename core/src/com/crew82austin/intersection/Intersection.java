@@ -26,7 +26,7 @@ public class Intersection {
 	private StopLine[] stop;
 	private Building[] buildings;
 	private ConcreteSlab[] concretes;
-	
+	private CrossWalk[] crosswalks;
 	/**
 	 * Creates a standard intersection
 	 * @param x
@@ -68,6 +68,12 @@ public class Intersection {
 		concretes[2] = new ConcreteSlab(724, 724, 300, 300, intersectionBatch, "concrete.png");
 		concretes[3] = new ConcreteSlab (724, 0, 300, 300, intersectionBatch, "concrete.png");
 		
+		crosswalks = new CrossWalk[4];
+		crosswalks[0] = new CrossWalk(240, 300, 424, 0, intersectionBatch, "crosswalk.png");
+		crosswalks[1] = new CrossWalk(300, 770, 424, 270f, intersectionBatch, "crosswalk.png");
+		crosswalks[2] = new CrossWalk(727, 300, 424, 0, intersectionBatch, "crosswalk.png");
+		crosswalks[3] = new CrossWalk(300, 285, 424, 270f, intersectionBatch, "crosswalk.png");
+		
 		
 	}
 	
@@ -81,13 +87,17 @@ public class Intersection {
 	
 	public void draw(){
 	//intersectionBatch.draw(intersectionImg, intersectionX, intersectionY);
-		for(int c = 0; c < 4; c++)
-			concretes[c].draw();
-		for(int a = 0; a < nWays; a++)
+		int a;
+		for( a = 0; a < 4; a++)
+			concretes[a].draw();
+		for( a = 0; a < nWays; a++)
 			stop[a].draw();
 		
-		for(int b = 0; b < 4; b++)
-			buildings[b].draw();
+		for(a = 0; a < 4; a++)
+			buildings[a].draw();
+		
+		for(a = 0; a < 4; a++)
+			crosswalks[a].draw();
 		
 		return;
 	}
