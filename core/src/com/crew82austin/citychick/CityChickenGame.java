@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
-import com.crew82austin.intersection.*;
+import com.crew82austin.citychick.intersection.*;
 
 
 public class CityChickenGame extends ApplicationAdapter {
@@ -26,7 +25,7 @@ public class CityChickenGame extends ApplicationAdapter {
 	private double chickSpawnTime;
 	private int maxSpawnTime;
 	private int minSpawnTime;
-
+	
 	private int mobID;
 	private int maxNumChickens;
 	float[] timers;
@@ -35,10 +34,17 @@ public class CityChickenGame extends ApplicationAdapter {
 	Chicken1[] chickens;
 	Intersection inter;
 	
+	public int WINDOW_WIDTH;
+	public int WINDOW_HEIGHT;
+	
 	
 	
 	@Override
 	public void create () {
+		WINDOW_WIDTH = Gdx.graphics.getWidth();
+		WINDOW_HEIGHT = Gdx.graphics.getHeight();
+		Gdx.graphics.getWidth();
+		
 		batch = new SpriteBatch();
 
 		inter = new Intersection(0, 0, 4, 5, "Manchacha and Slaughter", batch, "Chicken Xing Wire 1.1.png");;
@@ -54,7 +60,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		grid = false;	//Draw Grid. Toggled with 'q'
 		path = false;	//Draw Path. Uses Math
 		paused = false;	//Update Movement. Toggled with 'p'
-		manualSpawn = true; //Call a manually spawning method instead of random MOB spawning
+		manualSpawn = false; //Call a manually spawning method instead of random MOB spawning
 		indv = false;  //Draw cross-hairs and IDs for each MOB
 		frame = false;	//FPS
 		mousePoint = false;  //Print the mouse coordinates next to the mouse with tDraw
@@ -64,7 +70,7 @@ public class CityChickenGame extends ApplicationAdapter {
 		
 		
 		for(int c = 0; c < chickens.length; c++)
-			chickens[c] = new Chicken1(batch, "Overhead Walking Chicken.png", 0, 64, false);
+			chickens[c] = new Chicken1(batch, "Overhead Walking Chicken.png", 0, 64, false, inter);
 		
 		lines = new ShapeRenderer(500);
 		lines.setAutoShapeType(true);

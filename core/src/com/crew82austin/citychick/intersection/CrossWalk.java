@@ -1,8 +1,9 @@
-package com.crew82austin.intersection;
+package com.crew82austin.citychick.intersection;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.crew82austin.citychick.*;
 
 public class CrossWalk {
 
@@ -38,6 +39,30 @@ public class CrossWalk {
 		sprite.draw(crossBatch);
 		
 		return;
+	}
+	
+	/**
+	 * Get a MovePath representing a the center of the crosswalk
+	 * @param boolean reverse
+	 * @return MovePath
+	 */
+	public MovePath getCenterLineMove(boolean reverse){
+		MovePath path = new MovePath(2000, 2000);
+		float rotRad = (crossRotation - 180f)* ((float)Math.PI/180);
+		double xDiff = Math.cos(rotRad) * height;
+		double yDiff = Math.sin(rotRad) * height;
+		int xStart = crossX + (width / 2);
+		
+		if(!reverse )
+			path.setLine(xStart, crossY, xStart + (int)xDiff, crossY + (int)yDiff);
+		else if (reverse)
+			path.setLine(xStart + (int)xDiff, crossY + (int)yDiff, xStart, crossY);
+		
+		System.out.println("(CrossWalk) returning MovePath rotRad = "+rotRad+" xDiff/yDiff "+xDiff+"/"
+				+yDiff+" xStart = "+xStart+" reversed "+reverse);
+		
+		return path;
+		
 	}
 	
 }

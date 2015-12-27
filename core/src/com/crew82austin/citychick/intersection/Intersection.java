@@ -1,4 +1,4 @@
-package com.crew82austin.intersection;
+package com.crew82austin.citychick.intersection;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -52,7 +52,7 @@ public class Intersection {
 		
 		stop = new StopLine[nWays];
 		stop[0] = new StopLine(223, 300, 223, 460, intersectionBatch, "stopline.png");
-		stop[1] = new StopLine(300, 800, 488, 800, intersectionBatch, "stopline.png");
+		stop[1] = new StopLine(300, 780, 488, 780, intersectionBatch, "stopline.png");
 		stop[2] = new StopLine(775, 490, 775, 723, intersectionBatch, "stopline.png");
 		stop[3] = new StopLine(520, 233, 720, 233, intersectionBatch, "stopline.png");
 		
@@ -100,5 +100,9 @@ public class Intersection {
 			crosswalks[a].draw();
 		
 		return;
+	}
+	
+	public CrossWalk getCrossWalk(int id){
+		return crosswalks[id];
 	}
 }

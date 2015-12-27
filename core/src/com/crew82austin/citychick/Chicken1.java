@@ -3,6 +3,7 @@ package com.crew82austin.citychick;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.*;
 import java.util.Random;
+import com.crew82austin.citychick.intersection.Intersection;
 
 public class Chicken1 implements Movable{
 	
@@ -25,7 +26,7 @@ public class Chicken1 implements Movable{
 	private Random rand;
 	private double chickenStartTime;
 	
-	public Chicken1(SpriteBatch batch, String imgFile, int frame, int size, boolean looped){
+	public Chicken1(SpriteBatch batch, String imgFile, int frame, int size, boolean looped, Intersection inter){
 		sprite = new SpriteSet(imgFile, size, size);
 		chickenBatch = batch;
 		spawned = false;
@@ -39,6 +40,15 @@ public class Chicken1 implements Movable{
 		for(int a = 0; a < Moves; a++){
 			chickenPath[a] = new MovePath(1024, 1024);
 		}
+		
+	/*	chickenPath[0] = inter.getCrossWalk(0).getCenterLineMove(true);
+		chickenPath[1] = inter.getCrossWalk(0).getCenterLineMove(false);
+		chickenPath[2] = inter.getCrossWalk(2).getCenterLineMove(true);
+		chickenPath[3] = inter.getCrossWalk(2).getCenterLineMove(false);
+		chickenPath[4] = inter.getCrossWalk(1).getCenterLineMove(false);
+		chickenPath[5] = inter.getCrossWalk(1).getCenterLineMove(true);
+		chickenPath[6] = inter.getCrossWalk(3).getCenterLineMove(false);
+		chickenPath[7] = inter.getCrossWalk(3).getCenterLineMove(true);*/
 		
 		//Begin path definitions
 		chickenPath[0].setLine(235, 1024, 235, 0);

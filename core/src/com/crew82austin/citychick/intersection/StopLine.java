@@ -1,4 +1,4 @@
-package com.crew82austin.intersection;
+package com.crew82austin.citychick.intersection;
 /**
  * Line on the intersection where cars stop.
  * Made as white rectangle
