@@ -1,5 +1,8 @@
 package com.crew82austin.citychick;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -26,7 +29,8 @@ public class CityChickenGame extends ApplicationAdapter {
 	PathDrawer pDraw;
 	TextDrawer tDraw;
 	Chicken1[] chickens;
-	
+	List<Stoplight>  stoplights = new ArrayList<Stoplight>();
+	Stoplight debounce = null;
 	
 	
 	@Override
@@ -45,8 +49,27 @@ public class CityChickenGame extends ApplicationAdapter {
 		///////////////////////////
 		chickens = new Chicken1[8];
 		timers = new float[4];
+
+		// bottom lights
+		stoplights.add(new Stoplight(512, 306, 62, 10));
+		stoplights.add(new Stoplight(584, 306, 62, 10));
+		stoplights.add(new Stoplight(656, 306, 62, 10));
 		
-		
+		// right lights
+		stoplights.add(new Stoplight(708, 512, 10, 62));
+		stoplights.add(new Stoplight(708, 584, 10, 62));
+		stoplights.add(new Stoplight(708, 656, 10, 62));
+
+		// top lights
+		stoplights.add(new Stoplight(452, 711, 62, 10));
+		stoplights.add(new Stoplight(380, 711, 62, 10));
+		stoplights.add(new Stoplight(308, 711, 62, 10));
+
+		// left lights
+		stoplights.add(new Stoplight(306, 308, 10, 62));
+		stoplights.add(new Stoplight(306, 380, 10, 62));
+		stoplights.add(new Stoplight(306, 452, 10, 62));
+
 		for(int c = 0; c < chickens.length; c++)
 			chickens[c] = new Chicken1(batch, "Overhead Walking Chicken.png", 0, 64, false);
 		
@@ -88,6 +111,10 @@ public class CityChickenGame extends ApplicationAdapter {
 		/////////////////////////////End Draw / Begin Input
 		batch.end();
 		
+		for (Stoplight stoplight : stoplights) {
+			stoplight.draw(lines);
+		}
+
 		handleInput();
 		////////////////////////////End Input / Begin MOBs
 		if(indv)
@@ -224,8 +251,24 @@ public class CityChickenGame extends ApplicationAdapter {
 			System.out.println("Exit by Escape!");
 		}
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-			pDraw.mark(Gdx.input.getX(), Gdx.input.getY());
+			float x = Gdx.input.getX();
+			float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+			boolean bHit = false;
+			if (debounce == null) {
+				for (Stoplight stoplight : stoplights) {
+					if (stoplight.testPoint(x, y)) {
+						stoplight.toggle();
+						debounce = stoplight;
+						bHit = true;
+					}
+				}
+				if (!bHit) {
+					pDraw.mark(Gdx.input.getX(), Gdx.input.getY());
+				}
+			}
 			//System.out.println(Gdx.input.getX()+"-"+Gdx.input.getY());
+		} else {
+			debounce = null;
 		}
 	/*	if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
 			rMen.draw(batch, 1f);	//Stuff for a menu
