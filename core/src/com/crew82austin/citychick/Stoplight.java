@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-public class Stoplight {
+public class Stoplight extends AbstractCollidableObject {
 
 	public static final long	YELLOW_DURATION = 3000;		// 3 seconds
 	
@@ -72,5 +72,24 @@ public class Stoplight {
 	public boolean testPoint(float x, float y) {
 		return ((x >= m_vecLowerLeft.x) && (x < m_vecLowerLeft.x + m_nWidth) &&
 				(y >= m_vecLowerLeft.y) && (y < m_vecLowerLeft.y + m_nHeight));
+	}
+
+	@Override
+	public boolean testCollision(Vector2 start, Vector2 end) {
+		if (m_eState != LightState.GREEN) {
+			return (testLineIntersection(start.x, start.y, end.x, end.y,
+							m_vecLowerLeft.x, m_vecLowerLeft.y,
+							m_vecLowerLeft.x, m_vecLowerLeft.y + m_nHeight) ||
+					testLineIntersection(start.x, start.y, end.x, end.y,
+							m_vecLowerLeft.x, m_vecLowerLeft.y,
+							m_vecLowerLeft.x + m_nWidth, m_vecLowerLeft.y) ||
+					testLineIntersection(start.x, start.y, end.x, end.y,
+							m_vecLowerLeft.x + m_nWidth, m_vecLowerLeft.y,
+							m_vecLowerLeft.x + m_nWidth, m_vecLowerLeft.y + m_nHeight) ||
+					testLineIntersection(start.x, start.y, end.x, end.y,
+							m_vecLowerLeft.x, m_vecLowerLeft.y + m_nHeight,
+							m_vecLowerLeft.x + m_nWidth, m_vecLowerLeft.y + m_nHeight));
+		}
+		return false;
 	}
 }

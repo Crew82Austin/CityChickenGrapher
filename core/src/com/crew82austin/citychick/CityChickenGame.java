@@ -6,13 +6,22 @@ import java.util.List;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.crew82austin.citychick.path.LinearPath;
 
 
 public class CityChickenGame extends ApplicationAdapter {
+	public static final int     MAX_LANES = 12;
+	public static final double  MIN_CAR_SPAWN_DELAY =  0.5;
+	public static final double  MAX_CAR_SPAWN_DELAY =  6.0;
+
+	public static final boolean	DEBUG_TEST_SEGMENTS = true;
+
 	SpriteBatch batch;
 	Texture img;
 	ShapeRenderer lines;
@@ -37,11 +46,17 @@ public class CityChickenGame extends ApplicationAdapter {
 	List<Stoplight>  stoplights = new ArrayList<Stoplight>();
 	Stoplight debounce = null;
 	
-	
+	// Car support
+	protected Lane[] lanes = new Lane[MAX_LANES];
+	protected SpriteSet carSprites;
+	protected List<Automobile> cars = new ArrayList<Automobile>();
+	protected float nextCarSpawn = 0.0f;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("Chicken Xing Wire 1.1.png");
+		carSprites = new SpriteSet("Cars.png", 64, 128);
 
 		mobID = 0;
 		minSpawnTime = 5;
@@ -95,19 +110,47 @@ public class CityChickenGame extends ApplicationAdapter {
 			mSpawnMovables();
 		
 		chickSpawnTime = (int)(Math.random() * ((maxSpawnTime - minSpawnTime) + 1) + minSpawnTime); // Spawn time algorithm
-		
+
+		lanes[ 0] = new Lane(new LinearPath( 544,    0,  544, 1152), stoplights.get( 0));
+		lanes[ 1] = new Lane(new LinearPath( 616,    0,  616, 1152), stoplights.get( 1));
+		lanes[ 2] = new Lane(new LinearPath( 688,    0,  688, 1152), stoplights.get( 2));
+		lanes[ 3] = new Lane(new LinearPath(1024,  544, -128,  544), stoplights.get( 3));
+		lanes[ 4] = new Lane(new LinearPath(1024,  616, -128,  616), stoplights.get( 4));
+		lanes[ 5] = new Lane(new LinearPath(1024,  688, -128,  688), stoplights.get( 5));
+		lanes[ 6] = new Lane(new LinearPath( 484, 1024,  484, -128), stoplights.get( 6));
+		lanes[ 7] = new Lane(new LinearPath( 412, 1024,  412, -128), stoplights.get( 7));
+		lanes[ 8] = new Lane(new LinearPath( 340, 1024,  340, -128), stoplights.get( 8));
+		lanes[ 9] = new Lane(new LinearPath(   0,  340, 1152,  340), stoplights.get( 9));
+		lanes[10] = new Lane(new LinearPath(   0,  412, 1152,  412), stoplights.get(10));
+		lanes[11] = new Lane(new LinearPath(   0,  484, 1152,  484), stoplights.get(11));
+		calcNextCarSpawn();
 	}
 
 	@Override
 	public void render () {
-		
-		
+		float delta = Gdx.graphics.getRawDeltaTime();
+
+		nextCarSpawn -= delta;
+		if (nextCarSpawn < 0.0f) {
+			int pathId = (int) (Math.random() * MAX_LANES);
+			calcNextCarSpawn();
+			cars.add(new Automobile(carSprites, lanes[pathId]));
+		}
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
+		// First, draw the intersection image
 		batch.begin();
-		///////////////////////////////Begin Draw
 		batch.draw(img, 0, 0);
+		batch.end();
+
+		// Second, draw the stoplights
+		for (Stoplight stoplight : stoplights) {
+			stoplight.draw(lines);
+		}
+		
+		/////////////////////////////Begin Draw
+		batch.begin();
 		drawMovables();
 		
 		if(path)
@@ -122,12 +165,21 @@ public class CityChickenGame extends ApplicationAdapter {
 			tDraw.draw((float)Gdx.input.getX() + 5f, Gdx.graphics.getHeight() - (float)Gdx.input.getY() + 5f, Gdx.input.getX()+","+
 					(Gdx.graphics.getHeight() - Gdx.input.getY()));
 		}
+		for (Automobile car : cars) {
+			car.update(delta);
+			car.draw(batch);
+		}
 		
 		/////////////////////////////End Draw / Begin Input
 		batch.end();
-		
-		for (Stoplight stoplight : stoplights) {
-			stoplight.draw(lines);
+
+		if (DEBUG_TEST_SEGMENTS) {
+			lines.begin(ShapeType.Line);
+			lines.setColor(Color.WHITE);
+			for (Automobile car : cars) {
+				car.drawDebug(lines);
+			}
+			lines.end();
 		}
 
 		handleInput();
@@ -140,7 +192,9 @@ public class CityChickenGame extends ApplicationAdapter {
 			updateMovables();
 		
 		//End MOBs
-				
+
+		// Java 1.8 lambda syntax: remove any cars that are "done"...
+		cars.removeIf(p -> p.isDone());
 	}
 	
 	 
@@ -328,5 +382,10 @@ public class CityChickenGame extends ApplicationAdapter {
 	public void clearTimer(int timer){
 		timers[timer] = 0;
 		return;
+	}
+	
+	public void calcNextCarSpawn() {
+		nextCarSpawn = (float) ((Math.random() * (MAX_CAR_SPAWN_DELAY - MIN_CAR_SPAWN_DELAY)) +
+				                MIN_CAR_SPAWN_DELAY);
 	}
 }

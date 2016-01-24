@@ -41,14 +41,14 @@ public class Chicken1 implements Movable{
 		}
 		
 		//Begin path definitions
-		chickenPath[0].setLine(235, 1024, 235, 0);
-		chickenPath[1].setLine(235, 0, 235, 1024);
-		chickenPath[2].setLine(720, 1024, 720, 0);
-		chickenPath[3].setLine(720, 0, 720, 1024);
-		chickenPath[4].setLine(0, 740, 1024, 740);
-		chickenPath[5].setLine(1024, 740, 0, 740);
-		chickenPath[6].setLine(0, 250, 1024, 250);
-		chickenPath[7].setLine(1024, 250, 0, 250);
+		chickenPath[0].setLine( 250, 1024,  250,    0);
+		chickenPath[1].setLine( 250,    0,  250, 1024);
+		chickenPath[2].setLine( 752, 1024,  752,    0);
+		chickenPath[3].setLine( 752,    0,  752, 1024);
+		chickenPath[4].setLine(  0,   750, 1024,  750);
+		chickenPath[5].setLine(1024,  750,    0,  750);
+		chickenPath[6].setLine(  0,   270, 1024,  270);
+		chickenPath[7].setLine(1024,  270,    0,  270);
 		//End path definitions
 		
 		
