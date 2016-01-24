@@ -39,15 +39,15 @@ public class SpriteSet {
   public void draw(SpriteBatch batch, float x, float y, int frame, float rot, float scale) {
     int imgX = (frame % columns) * tileWidth;
     int imgY = (frame / columns) * tileHeight;
-    batch.draw(img,                            // Texture texture,
-        x,                 y,                  // float x,       float y,
-        tileWidthCenter,   tileHeightCenter,   // float originX, float originY,
-        tileWidth * scale, tileHeight * scale, // float width,   float height,
-        scale,             scale,              // float scaleX,  float scaleY,
-        rot,                                   // float rotation,
-        imgX,              imgY,               // int srcX,      int srcY,
-        tileWidth,         tileHeight,         // int srcWidth,  int srcHeight,
-        false,             false);             // boolean flipX, boolean flipY
+    batch.draw(img,                                // Texture texture,
+        x - tileWidthCenter, y - tileHeightCenter, // float x,       float y,
+        tileWidthCenter,     tileHeightCenter,     // float originX, float originY,
+        tileWidth * scale,   tileHeight * scale,   // float width,   float height,
+        scale,               scale,                // float scaleX,  float scaleY,
+        rot,                                       // float rotation,
+        imgX,                imgY,                 // int srcX,      int srcY,
+        tileWidth,           tileHeight,           // int srcWidth,  int srcHeight,
+        false,               false);               // boolean flipX, boolean flipY
   }
 
   public final int maxSprites() {
